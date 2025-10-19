@@ -1,0 +1,48 @@
+services:
+  db:
+    image: postgres:16
+    container_name: pg
+    restart: always
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=appdb_prod
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+     - backend
+
+  # (Opcional) pgAdmin web
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: pgadmin
+    restart: unless-stopped
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@example.com
+      PGADMIN_DEFAULT_PASSWORD: admin
+      TZ: America/Argentina/Buenos_Aires
+    ports:
+      - "8080:80"
+    depends_on:
+      - db
+    networks:
+     - backend
+
+  sirius:
+    build:
+      context: .           
+      dockerfile: dockerfile      
+    container_name: sirius
+    ports:
+      - "1000:8080"
+    networks:
+     - backend
+
+
+volumes:
+  pgdata:
+
+networks:
+  backend:
