@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"net/http"
+	"os"
 
 	"github.com/francotraversa/siriusbackend/internal/auth"
 	"github.com/golang-jwt/jwt/v5"
@@ -15,7 +16,7 @@ func RegisterHealth(route *echo.Echo) {
 		NewClaimsFunc: func(c echo.Context) jwt.Claims {
 			return new(auth.JwtCustomClaims)
 		},
-		SigningKey: []byte("internaltoken"),
+		SigningKey: []byte(os.Getenv("JWT_SECRET")),
 	}
 
 	h.Use(echojwt.WithConfig(config))

@@ -1,9 +1,9 @@
 package controllers
 
 import (
-	"encoding/json"
-	"io"
 	"net/http"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/francotraversa/siriusbackend/internal/auth"
@@ -15,25 +15,31 @@ import (
 func AuthController(route *echo.Echo) {
 	a := route.Group("/auth")
 	a.POST("/login", loginHandler)
+
 }
 
 func loginHandler(c echo.Context) error {
 	var userCread types.Creds
-	b, errjson := io.ReadAll(c.Request().Body)
-	if errjson != nil {
-		return c.JSON(http.StatusBadRequest, "Error Read Json Login")
+	if err := c.Bind(&userCread); err != nil {
+		return c.JSON(http.StatusBadRequest, "JSON inválido")
 	}
 
-	err := json.Unmarshal(b, &userCread)
-	if err != nil {
-		return c.JSON(http.StatusBadRequest, "Error Unmarshal Login")
-	}
-	if userCread.Username == "" || userCread.Password == "" {
+	if (userCread.Username == "" && userCread.Email == "") || userCread.Password == "" {
 		c.JSON(http.StatusBadRequest, "Todos los campos son requeridos")
 	}
-	User := utils.FindUserByUsername(userCread.Username)
 
-	token, err := auth.GenerateToken(User.ID, User.Role, "internaltoken", 15*time.Minute)
+	var User *types.User
+
+	if strings.TrimSpace(userCread.Email) != "" {
+		User = utils.FindUserByEmail(strings.ToLower(strings.TrimSpace(userCread.Email)))
+	} else {
+		User = utils.FindUserByUsername(strings.ToLower(strings.TrimSpace(userCread.Username)))
+	}
+	if User == nil {
+		return c.JSON(http.StatusUnauthorized, "Credenciales inválidas")
+	}
+
+	token, err := auth.GenerateToken(User.ID, User.Role, os.Getenv("JWT_SECRET"), 15*time.Minute)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, "Error Make Token")
 	}

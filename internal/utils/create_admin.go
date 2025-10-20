@@ -11,6 +11,7 @@ import (
 
 const hardcodedUsername = "siriusadmin"
 const hardcodedPassword = "admin123"
+const hardcodedEmail = "admin@admin.com"
 
 func EnsureHardcodedUser(db *gorm.DB) error {
 	u := strings.ToLower(hardcodedUsername)
@@ -36,6 +37,7 @@ func EnsureHardcodedUser(db *gorm.DB) error {
 		Username: hardcodedUsername,
 		Password: string(hash),
 		Role:     "admin",
+		Email:    hardcodedEmail,
 	}
 	if err := db.Create(&user).Error; err != nil {
 		return err

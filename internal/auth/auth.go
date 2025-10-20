@@ -1,10 +1,12 @@
 package auth
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/francotraversa/siriusbackend/internal/types"
 	"github.com/golang-jwt/jwt/v5"
+	"github.com/labstack/echo/v4"
 )
 
 type JwtCustomClaims struct {
@@ -35,18 +37,26 @@ func GenerateToken(userID uint, role, secret string, ttl time.Duration) (*types.
 	return &result, nil
 }
 
-/*
-func ValidateToken(token string, secret string) bool {
-	claims := jwt.MapClaims{}
-	tok, err := jwt.ParseWithClaims(token, claims, func(t *jwt.Token) (interface{}, error) {
-		if t.Method != jwt.SigningMethodES256 {
-			return nil, fmt.Errorf("Algoritmo Invalido")
-		}
-		return []byte(secret), nil
-	})
-	if err != nil || !tok.Valid {
-		return nil, nil, fmt.Errorf("token inválido: %w", err)
+func RoleFromContext(c echo.Context) (string, error) {
+	tok, ok := c.Get("user").(*jwt.Token)
+	if !ok || tok == nil || !tok.Valid {
+		return "", fmt.Errorf("Token Invalido")
 	}
-	return tok, claims, nil
+	claims, ok := tok.Claims.(*JwtCustomClaims)
+	if !ok {
+		return "", fmt.Errorf("Error JwtClaims")
+	}
+	return claims.Role, nil
 }
-*/
+
+func IdFromContext(c echo.Context) (uint, error) {
+	tok, ok := c.Get("user").(*jwt.Token)
+	if !ok || tok == nil || !tok.Valid {
+		return 0, fmt.Errorf("Token Invalido")
+	}
+	claims, ok := tok.Claims.(*JwtCustomClaims)
+	if !ok {
+		return 0, fmt.Errorf("Error JwtClaims")
+	}
+	return claims.UserId, nil
+}

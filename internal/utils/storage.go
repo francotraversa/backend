@@ -18,7 +18,6 @@ var DBInstance = DatabaseInstance{}
 func (database DatabaseInstance) NewDataBase() {
 	var db *gorm.DB
 	dsn := "host=localhost user=postgres password=postgres dbname=appdb_prod port=5433 sslmode=disable TimeZone=America/Argentina/Buenos_Aires"
-
 	for {
 		var err error
 		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
@@ -29,13 +28,12 @@ func (database DatabaseInstance) NewDataBase() {
 		time.Sleep(2 * time.Second)
 	}
 	log.Println("DB CONNECTED")
-	if err := EnsureHardcodedUser(db); err != nil {
-		log.Fatalf("seed harcoded user error %s", err)
-	}
-
 	db.AutoMigrate(&types.User{})
 	db.AutoMigrate(&types.Message{})
 	db.AutoMigrate(&types.MessageDestination{})
+	if err := EnsureHardcodedUser(db); err != nil {
+		log.Fatalf("seed harcoded user error %s", err)
+	}
 	DBInstance.DB = db
 }
 

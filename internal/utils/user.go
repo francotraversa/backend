@@ -23,3 +23,13 @@ func FindUserByUsername(username string) *types.User {
 	}
 	return nil
 }
+func FindUserByEmail(email string) *types.User {
+	db := DatabaseInstance{}.Instance()
+
+	user := types.User{}
+	result := db.Limit(1).Find(&user, "email = ?", email)
+	if result.Error == nil && result.RowsAffected > 0 {
+		return &user
+	}
+	return nil
+}
