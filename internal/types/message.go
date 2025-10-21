@@ -37,3 +37,12 @@ type MessageSlack struct {
 type MessageDiscord struct {
 	Content string `json:"content"`
 }
+
+type MessageFilter struct {
+	MessageID uint      `json:"message_id"`
+	Content   string    `json:"content"`
+	CreatedAt time.Time `json:"created_at"`
+	DestID    uint      `json:"destination_id"`
+	Service   string    `json:"service"`
+	Status    string    `json:"status"`
+}

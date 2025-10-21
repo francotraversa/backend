@@ -30,14 +30,18 @@ func MetricsController(route *echo.Echo) {
 func getAllMessage(c echo.Context) error {
 	role, err := auth.RoleFromContext(c)
 	if err != nil {
-		return c.JSON(http.StatusForbidden, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusForbidden, err)
 	}
 	if role == "admin" {
-		messages, err := services.GetAllMessageGetUse()
+		messages, total, err := services.GetAllMessageGetUse()
 		if err != nil {
 			return c.JSON(http.StatusBadRequest, "Error make metrics")
 		}
-		return c.JSON(http.StatusOK, &messages)
+		response := map[string]interface{}{
+			"total":    total,
+			"messages": messages,
+		}
+		return c.JSON(http.StatusOK, response)
 	} else {
 		return c.JSON(http.StatusUnauthorized, "Sin credenciales Necesarias")
 	}
@@ -46,7 +50,7 @@ func getAllMessage(c echo.Context) error {
 func getcanthandler(c echo.Context) error {
 	role, err := auth.RoleFromContext(c)
 	if err != nil {
-		return c.JSON(http.StatusForbidden, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusForbidden, err)
 	}
 	if role == "admin" {
 		metrics, err := services.GetCantUseCase()

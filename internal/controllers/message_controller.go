@@ -23,12 +23,30 @@ func MessageController(route *echo.Echo) {
 	m.Use(echojwt.WithConfig(config))
 
 	m.POST("/send", sendMessageHandle)
+	m.GET("/today/", getAllMyMessageHandle)
+	m.GET("/date/", getMessageByDate)
+}
+
+func getMessageByDate(c echo.Context) error {
+	message, err := services.GetMessageByDateUseCase(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+	}
+	return c.JSON(http.StatusOK, message)
+}
+
+func getAllMyMessageHandle(c echo.Context) error {
+	message, err := services.GetMessageFilterUseCase(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+	}
+	return c.JSON(http.StatusOK, message)
 }
 
 func sendMessageHandle(c echo.Context) error {
 	uid, err := auth.IdFromContext(c)
 	if err != nil {
-		return c.JSON(http.StatusForbidden, map[string]string{"error": err.Error()})
+		return c.JSON(http.StatusForbidden, err)
 	}
 	var message types.MessageRequest
 	if err := c.Bind(&message); err != nil {
@@ -39,7 +57,7 @@ func sendMessageHandle(c echo.Context) error {
 	}
 	err2 := services.PostMessageUseCase(uid, message)
 	if err2 != nil {
-		return c.JSON(http.StatusBadRequest, map[string]string{"error": err2.Error()})
+		return c.JSON(http.StatusTooManyRequests, err2)
 	}
-	return c.JSON(http.StatusOK, "Mensaje cargado")
+	return c.JSON(http.StatusOK, "Mensaje Enviado")
 }

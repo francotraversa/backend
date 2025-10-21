@@ -31,7 +31,7 @@ func deluserhandle(c echo.Context) error {
 	var delUser types.DeleteUser
 	role, errtoken := auth.RoleFromContext(c)
 	if errtoken != nil {
-		return c.JSON(http.StatusForbidden, map[string]string{"error": errtoken.Error()})
+		return c.JSON(http.StatusForbidden, errtoken)
 	}
 	if role == "admin" {
 		if err := c.Bind(&delUser); err != nil {
@@ -40,7 +40,7 @@ func deluserhandle(c echo.Context) error {
 
 		err := services.DelteUserUseCase(delUser)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+			return c.JSON(http.StatusBadRequest, err)
 		}
 		return c.JSON(http.StatusOK, "Usuario Eliminado Correctamente")
 	}
@@ -51,7 +51,7 @@ func registerhandle(c echo.Context) error {
 	var newUser types.RegisterUser
 	role, errtoken := auth.RoleFromContext(c)
 	if errtoken != nil {
-		return c.JSON(http.StatusForbidden, map[string]string{"error": errtoken.Error()})
+		return c.JSON(http.StatusForbidden, errtoken)
 	}
 	if role == "admin" {
 		if err := c.Bind(&newUser); err != nil {
@@ -60,7 +60,7 @@ func registerhandle(c echo.Context) error {
 
 		err := services.RegisterUserUseCase(newUser)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+			return c.JSON(http.StatusBadRequest, err)
 		}
 		return c.JSON(http.StatusOK, "Usuario Creado Correctamente")
 	}
@@ -72,7 +72,7 @@ func upduserhandle(c echo.Context) error {
 	var updateUser types.UpdateUser
 	role, errtoken := auth.RoleFromContext(c)
 	if errtoken != nil {
-		return c.JSON(http.StatusForbidden, map[string]string{"error": errtoken.Error()})
+		return c.JSON(http.StatusForbidden, errtoken)
 	}
 	if role == "admin" {
 		if err := c.Bind(&updateUser); err != nil {
@@ -80,7 +80,7 @@ func upduserhandle(c echo.Context) error {
 		}
 		err := services.UpdateUserUseCase(updateUser)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, map[string]string{"error": err.Error()})
+			return c.JSON(http.StatusBadRequest, err)
 		}
 		return c.JSON(http.StatusOK, "Usuario actualizado correctamente")
 	}
