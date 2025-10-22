@@ -1,5 +1,4 @@
 tmp
-.env
 .env.*
 prueba.txt
 /internal/tests/
