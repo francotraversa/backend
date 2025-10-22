@@ -40,7 +40,7 @@ func deluserhandle(c echo.Context) error {
 
 		err := services.DelteUserUseCase(delUser)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, err)
+			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 		return c.JSON(http.StatusOK, "Usuario Eliminado Correctamente")
 	}
@@ -60,7 +60,7 @@ func registerhandle(c echo.Context) error {
 
 		err := services.RegisterUserUseCase(newUser)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, err)
+			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 		return c.JSON(http.StatusOK, "Usuario Creado Correctamente")
 	}
@@ -80,7 +80,7 @@ func upduserhandle(c echo.Context) error {
 		}
 		err := services.UpdateUserUseCase(updateUser)
 		if err != nil {
-			return c.JSON(http.StatusBadRequest, err)
+			return c.JSON(http.StatusBadRequest, err.Error())
 		}
 		return c.JSON(http.StatusOK, "Usuario actualizado correctamente")
 	}

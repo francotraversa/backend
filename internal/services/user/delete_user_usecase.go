@@ -10,8 +10,17 @@ import (
 
 func DelteUserUseCase(user types.DeleteUser) error {
 	db := utils.DatabaseInstance{}.Instance()
-	if err := db.Where("LOWER(username) = ? OR LOWER(email) = ?", strings.ToLower(user.Username), strings.ToLower(user.Email)).Delete(&types.User{}).Error; err != nil {
-		return fmt.Errorf("No se pudo eliminar el usuario")
+	res := db.Where(
+		"LOWER(username) = ? OR LOWER(email) = ?",
+		strings.ToLower(user.Username),
+		strings.ToLower(user.Email),
+	).Delete(&types.User{})
+
+	if res.Error != nil {
+		return res.Error
+	}
+	if res.RowsAffected == 0 {
+		return fmt.Errorf("Usuario no encontrado")
 	}
 	return nil
 }

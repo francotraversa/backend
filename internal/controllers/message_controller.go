@@ -30,7 +30,7 @@ func MessageController(route *echo.Echo) {
 func getMessageByDate(c echo.Context) error {
 	message, err := services.GetMessageByDateUseCase(c)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, message)
 }
@@ -38,7 +38,7 @@ func getMessageByDate(c echo.Context) error {
 func getAllMyMessageHandle(c echo.Context) error {
 	message, err := services.GetMessageFilterUseCase(c)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, err)
+		c.JSON(http.StatusBadRequest, err.Error())
 	}
 	return c.JSON(http.StatusOK, message)
 }
@@ -46,7 +46,7 @@ func getAllMyMessageHandle(c echo.Context) error {
 func sendMessageHandle(c echo.Context) error {
 	uid, err := auth.IdFromContext(c)
 	if err != nil {
-		return c.JSON(http.StatusForbidden, err)
+		return c.JSON(http.StatusForbidden, err.Error())
 	}
 	var message types.MessageRequest
 	if err := c.Bind(&message); err != nil {
@@ -57,7 +57,7 @@ func sendMessageHandle(c echo.Context) error {
 	}
 	err2 := services.PostMessageUseCase(uid, message)
 	if err2 != nil {
-		return c.JSON(http.StatusTooManyRequests, err2)
+		return c.JSON(http.StatusTooManyRequests, err2.Error())
 	}
 	return c.JSON(http.StatusOK, "Mensaje Enviado")
 }
