@@ -13,7 +13,10 @@ require (
 	gorm.io/gorm v1.31.0
 )
 
-require golang.org/x/time v0.11.0 // indirect
+require (
+	github.com/mattn/go-sqlite3 v1.14.22 // indirect
+	golang.org/x/time v0.11.0 // indirect
+)
 
 require (
 	github.com/jackc/pgpassfile v1.0.0 // indirect
@@ -32,4 +35,5 @@ require (
 	golang.org/x/sync v0.17.0 // indirect
 	golang.org/x/sys v0.37.0 // indirect
 	golang.org/x/text v0.30.0 // indirect
+	gorm.io/driver/sqlite v1.6.0
 )

@@ -2,7 +2,6 @@ package services
 
 import (
 	"fmt"
-	"strings"
 	"time"
 
 	"github.com/francotraversa/siriusbackend/internal/auth"
@@ -17,8 +16,8 @@ func GetMessageFilterUseCase(c echo.Context) (*[]types.MessageFilter, error) {
 	if err != nil {
 		return nil, err
 	}
-	statuses := NormalizarConsulta(c.QueryParam("status"))
-	services := NormalizarConsulta(c.QueryParam("service"))
+	statuses := utils.NormalizarConsulta(c.QueryParam("status"))
+	services := utils.NormalizarConsulta(c.QueryParam("service"))
 	start, end := utils.MidnightRange(time.Local, time.Now())
 
 	q := db.Model(&types.MessageDestination{}).
@@ -30,7 +29,7 @@ func GetMessageFilterUseCase(c echo.Context) (*[]types.MessageFilter, error) {
 			messages.content               AS content,
 			messages.created_at            AS created_at`).
 		Joins("JOIN messages ON messages.id = message_destinations.message_id").
-		Where("messages.user_id = ? AND status = ? ", uid, statuses).
+		Where("messages.user_id = ?", uid).
 		Where("messages.created_at >= ? AND messages.created_at < ?", start, end)
 
 	if len(statuses) > 0 {
@@ -49,19 +48,4 @@ func GetMessageFilterUseCase(c echo.Context) (*[]types.MessageFilter, error) {
 	}
 	return &mf, nil
 
-}
-
-func NormalizarConsulta(s string) []string {
-	if s == "" {
-		return nil
-	}
-	parts := strings.Split(s, ",")
-	out := make([]string, 0, len(parts))
-	for _, p := range parts {
-		v := strings.ToLower(strings.TrimSpace(p))
-		if v != "" {
-			out = append(out, v)
-		}
-	}
-	return out
 }

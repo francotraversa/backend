@@ -1,7 +1,9 @@
 package utils
 
 import (
+	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"github.com/francotraversa/siriusbackend/internal/types"
@@ -17,7 +19,16 @@ var DBInstance = DatabaseInstance{}
 
 func (database DatabaseInstance) NewDataBase() {
 	var db *gorm.DB
-	dsn := "host=localhost user=postgres password=postgres dbname=appdb_prod port=5433 sslmode=disable TimeZone=America/Argentina/Buenos_Aires"
+	host := os.Getenv("POSTGRES_HOST")
+	user := os.Getenv("POSTGRES_USER")
+	pass := os.Getenv("POSTGRES_PASSWORD")
+	dbName := os.Getenv("POSTGRES_DB")
+	port := os.Getenv("POSTGRES_PORT")
+	ssl := os.Getenv("POSTGRES_SSL")
+	dsn := fmt.Sprintf(
+		"host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		host, user, pass, dbName, port, ssl,
+	)
 	for {
 		var err error
 		db, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
@@ -39,4 +50,8 @@ func (database DatabaseInstance) NewDataBase() {
 
 func (database DatabaseInstance) Instance() *gorm.DB {
 	return DBInstance.DB
+}
+
+func OverrideDatabaseInstance(db *gorm.DB) {
+	DBInstance.DB = db
 }

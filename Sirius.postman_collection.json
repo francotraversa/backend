@@ -1,0 +1,431 @@
+{
+	"info": {
+		"_postman_id": "fad94999-7ee0-4c82-a46a-b31974af5d4a",
+		"name": "Sirius",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "33599786"
+	},
+	"item": [
+		{
+			"name": "CheckStatus",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjA4NTMwNDZ9.DLN6dIVqqPPrR5wk3B8uNEg-X6kxD8oVF1J-Kydb28I",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/health",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"health"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"siriusadmin\",\r\n  \"password\": \"admin123!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/auth/login",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"auth",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "RegisterUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjExMDIwMzN9.RwoLYGBuIyNbbQhg-TlYQCWCteL7nnu8pr7llQkmakM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin_test1\",\r\n  \"email\": \"admin_test1@example.com\",\r\n  \"password\": \"password123\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/loged/reguser",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"loged",
+						"reguser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CheckAdmin",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjExMDIwMzN9.RwoLYGBuIyNbbQhg-TlYQCWCteL7nnu8pr7llQkmakM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/metrics",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjA4ODk5OTl9.dt8_ZXgwHY9cC6Bbir2C_CdII4IJL_-tI4LCd8UGp1k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin_test3\",\r\n  \"email\": \"admin_test3@example.com\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/loged/deluser",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"loged",
+						"deluser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateUser",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjA4ODk5OTl9.dt8_ZXgwHY9cC6Bbir2C_CdII4IJL_-tI4LCd8UGp1k",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"username\": \"admin_test2\",\r\n  \"email\": \"admin_test2@example.com\",\r\n  \"role\": \"admin\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/loged/upduser",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"loged",
+						"upduser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SendMessage",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjExMDIwMzN9.RwoLYGBuIyNbbQhg-TlYQCWCteL7nnu8pr7llQkmakM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"content\": \"prueba both\",\r\n  \"services\": [\r\n    {\"app\":\"discord\"},\r\n    {\"app\": \"slack\"}\r\n  ]\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/message/send",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"message",
+						"send"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Metrics Admin",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjEwMTQzMTB9.-HVE699JBg_Xo2ninApK6_T4xTZVOQ9GeBilUlYL-EM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "{{baseUrl}}/admin/metrics",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"metrics"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllMessagesAdmin",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjEwMTc3ODB9.Gfd4JlMx49ksDGZQqqUVACE2dy3Cniy2a7sSxQMdwA8",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/admin/list",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"admin",
+						"list"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Messages by Status and Services",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjEwMTQwOTV9.-4FxqqhriGVGDB2iNVpee0J1IX_n2lCJp3bvZuzbQv0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjA4NTMwNDZ9.DLN6dIVqqPPrR5wk3B8uNEg-X6kxD8oVF1J-Kydb28I",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/message/today/?status=failed&service=slack,discord",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"message",
+						"today",
+						""
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "failed"
+						},
+						{
+							"key": "service",
+							"value": "slack,discord"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Meesages By Status and Service Between Dates",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjozLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjEwMTQzMTB9.-HVE699JBg_Xo2ninApK6_T4xTZVOQ9GeBilUlYL-EM",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoxLCJyb2xlIjoiYWRtaW4iLCJleHAiOjE3NjA4NTMwNDZ9.DLN6dIVqqPPrR5wk3B8uNEg-X6kxD8oVF1J-Kydb28I",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{baseUrl}}/message/date/?status=failed&service=slack,discord&between=2025-10-01,2025-10-20",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"message",
+						"date",
+						""
+					],
+					"query": [
+						{
+							"key": "status",
+							"value": "failed"
+						},
+						{
+							"key": "service",
+							"value": "slack,discord"
+						},
+						{
+							"key": "between",
+							"value": "2025-10-01,2025-10-20"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

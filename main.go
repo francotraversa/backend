@@ -8,8 +8,8 @@ import (
 )
 
 func main() {
-	utils.DatabaseInstance{}.NewDataBase()
 	enviroment.LoadEnviroment("dev")
+	utils.DatabaseInstance{}.NewDataBase()
 	e := echo.New()
 	controllers.RegisterHealth(e)
 	controllers.AuthController(e)

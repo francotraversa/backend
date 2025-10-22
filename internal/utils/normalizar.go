@@ -2,7 +2,7 @@ package utils
 
 import "strings"
 
-func NormalizarConsulta(s string) *[]string {
+func NormalizarConsulta(s string) []string {
 	if s == "" {
 		return nil
 	}
@@ -14,5 +14,5 @@ func NormalizarConsulta(s string) *[]string {
 			out = append(out, v)
 		}
 	}
-	return &out
+	return out
 }

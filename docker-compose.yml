@@ -35,8 +35,9 @@ services:
       context: .           
       dockerfile: dockerfile      
     container_name: sirius
+    env_file: ".env.dev"
     ports:
-      - "1000:8080"
+      - "1000:8181"
     networks:
      - backend
 

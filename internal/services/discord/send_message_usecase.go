@@ -16,6 +16,7 @@ func SendMessagesUseCase(text string) string {
 	}
 
 	req, err := http.NewRequest(http.MethodPost, os.Getenv("DISCORD_WH"), bytes.NewReader(body))
+
 	if err != nil {
 		return "failed"
 	}

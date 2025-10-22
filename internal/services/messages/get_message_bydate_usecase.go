@@ -17,16 +17,15 @@ func GetMessageByDateUseCase(c echo.Context) (*[]types.MessageFilter, error) {
 	if err != nil {
 		return nil, err
 	}
-	loc, _ := time.LoadLocation("America/Argentina/Buenos_Aires")
 	var from, to time.Time
 
 	if b := c.QueryParam("between"); b != "" {
 		ps := strings.SplitN(b, ",", 2)
 		if len(ps) == 2 {
-			if f, _ := parseDate(ps[0], loc); !f.IsZero() {
+			if f, _ := parseDate(ps[0]); !f.IsZero() {
 				from = f
 			}
-			if t, dateOnly := parseDate(ps[1], loc); !t.IsZero() {
+			if t, dateOnly := parseDate(ps[1]); !t.IsZero() {
 				if dateOnly {
 					t = t.AddDate(0, 0, 1)
 				}
@@ -34,18 +33,18 @@ func GetMessageByDateUseCase(c echo.Context) (*[]types.MessageFilter, error) {
 			}
 		}
 	} else {
-		if f, _ := parseDate(c.QueryParam("from"), loc); !f.IsZero() {
+		if f, _ := parseDate(c.QueryParam("from")); !f.IsZero() {
 			from = f
 		}
-		if t, dateOnly := parseDate(c.QueryParam("to"), loc); !t.IsZero() {
+		if t, dateOnly := parseDate(c.QueryParam("to")); !t.IsZero() {
 			if dateOnly {
 				t = t.AddDate(0, 0, 1)
 			} // [from, to)
 			to = t
 		}
 	}
-	statuses := normalizarConsulta(c.QueryParam("status"))
-	services := normalizarConsulta(c.QueryParam("service"))
+	statuses := utils.NormalizarConsulta(c.QueryParam("status"))
+	services := utils.NormalizarConsulta(c.QueryParam("service"))
 
 	q := db.Table("message_destinations").
 		Select(`
@@ -82,7 +81,7 @@ func GetMessageByDateUseCase(c echo.Context) (*[]types.MessageFilter, error) {
 
 }
 
-func parseDate(s string, loc *time.Location) (time.Time, bool) {
+func parseDate(s string) (time.Time, bool) {
 	s = strings.TrimSpace(s)
 	if s == "" {
 		return time.Time{}, false
@@ -90,23 +89,8 @@ func parseDate(s string, loc *time.Location) (time.Time, bool) {
 	if t, err := time.Parse(time.RFC3339, s); err == nil {
 		return t, false
 	}
-	if d, err := time.ParseInLocation("2006-01-02", s, loc); err == nil {
-		return time.Date(d.Year(), d.Month(), d.Day(), 0, 0, 0, 0, loc), true
+	if d, err := time.Parse("2006-01-02", s); err == nil {
+		return d, true
 	}
 	return time.Time{}, false
-}
-
-func normalizarConsulta(s string) []string {
-	if s == "" {
-		return nil
-	}
-	parts := strings.Split(s, ",")
-	out := make([]string, 0, len(parts))
-	for _, p := range parts {
-		v := strings.ToLower(strings.TrimSpace(p))
-		if v != "" {
-			out = append(out, v)
-		}
-	}
-	return out
 }
