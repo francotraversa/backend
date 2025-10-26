@@ -75,7 +75,7 @@ func GetMessageByDateUseCase(c echo.Context) (*[]types.MessageFilter, error) {
 		Order("messages.created_at DESC, message_destinations.id ASC").
 		Limit(50).
 		Scan(&mf).Error; err != nil { // Scan a tu DTO
-		return nil, fmt.Errorf("Error data base")
+		return nil, fmt.Errorf("Error en la Base de datos")
 	}
 	return &mf, nil
 

@@ -17,7 +17,7 @@ func PostMessageUseCase(id uint, message types.MessageRequest) error {
 		Content: message.Content,
 	}
 	cant, err := utils.CountMessagebyID(id)
-	if cant <= 100 {
+	if cant <= 3 {
 		if err != nil {
 			return err
 		}

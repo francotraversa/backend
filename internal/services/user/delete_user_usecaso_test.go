@@ -56,7 +56,7 @@ func TestDeleteUserUseCaseShouldValidateUser(t *testing.T) {
 	RegisterUserUseCase(newUser)
 
 	err = DelteUserUseCase(deleteUser)
-	if err != nil {
+	if err == nil {
 		t.Fatalf("Fallo Porque el Usuario no Existe")
 	}
 }

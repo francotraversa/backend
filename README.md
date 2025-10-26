@@ -118,7 +118,7 @@ Roles: por defecto user; podés agregar admin para endpoints de métricas.
 > Usa `{{token}}` (Bearer) para los endpoints protegidos.
 
 ### Login
-- **URL:** `/auth/login`
+- **URL:** `url/auth/login`
 - **Method:** `POST`
 - **Body:**
 ```json

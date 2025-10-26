@@ -13,8 +13,12 @@ func UpdateUserUseCase(user types.UpdateUser) error {
 	if user.Role == nil || (*user.Role != "admin" && *user.Role != "user") {
 		return fmt.Errorf("invalid role")
 	}
-	if err := db.Model(&types.User{}).Where("username = ? OR email = ?", strings.ToLower(user.Username), strings.ToLower(user.Email)).Update("role", *user.Role).Error; err != nil {
-		return fmt.Errorf("Error al actualizar Role")
+	res := db.Model(&types.User{}).Where("username = ? OR email = ?", strings.ToLower(user.Username), strings.ToLower(user.Email)).Update("role", *user.Role)
+	if res.Error != nil {
+		return res.Error
+	}
+	if res.RowsAffected == 0 {
+		return fmt.Errorf("Usuario no encontrado")
 	}
 	return nil
 }

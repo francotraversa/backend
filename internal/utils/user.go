@@ -23,6 +23,7 @@ func FindUserByUsername(username string) *types.User {
 	}
 	return nil
 }
+
 func FindUserByEmail(email string) *types.User {
 	db := DatabaseInstance{}.Instance()
 
