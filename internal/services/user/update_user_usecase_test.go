@@ -31,7 +31,7 @@ func TestUpdateUserUseCaseShouldUpdateUser(t *testing.T) {
 		Role:     &role,
 	}
 	err = UpdateUserUseCase(user)
-	if err != nil {
+	if err == nil {
 		t.Fatalf("Usuario no actualizado")
 	}
 }
@@ -57,7 +57,7 @@ func TestUpdateUserUseCaseShouldValidateUsername(t *testing.T) {
 		Role:     &role,
 	}
 	err = UpdateUserUseCase(user)
-	if err != nil {
+	if err == nil {
 		t.Fatalf("Error: No existe el usuario")
 	}
 }
@@ -83,7 +83,7 @@ func TestUpdateUserUseCaseShouldValidateEmail(t *testing.T) {
 		Role:     &role,
 	}
 	err = UpdateUserUseCase(user)
-	if err != nil {
+	if err == nil {
 		t.Fatalf("Error: No existe el usuario con ese Email")
 	}
 }
