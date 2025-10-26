@@ -8,6 +8,7 @@ import (
 	"github.com/francotraversa/siriusbackend/internal/types"
 	"github.com/francotraversa/siriusbackend/internal/utils"
 	"golang.org/x/crypto/bcrypt"
+	"gorm.io/gorm"
 )
 
 func RegisterUserUseCase(user types.RegisterUser) error {
@@ -34,8 +35,23 @@ func RegisterUserUseCase(user types.RegisterUser) error {
 		}
 	}
 	var count int64
-	if err := db.Model(&types.User{}).Where("LOWER(username) = ? OR LOWER(email) = ?", strings.ToLower(user.Username), user.Email).Count(&count).Error; err != nil {
-		return err
+	var res *gorm.DB
+	if user.Email == "" {
+		res = db.Model(&types.User{}).Where("LOWER(username) = ?", strings.ToLower(user.Username)).Count(&count)
+	} else {
+		res = db.Model(&types.User{}).Where("LOWER(email) = ?", user.Email).Count(&count)
+	}
+
+	if user.Email == "" {
+		res = db.Model(&types.User{}).Where("LOWER(username) = ?", strings.ToLower(user.Username)).Count(&count)
+	} else if user.Username == "" {
+		res = db.Model(&types.User{}).Where("LOWER(email) = ?", user.Email).Count(&count)
+	} else {
+		res = db.Model(&types.User{}).Where("LOWER(username) = ? AND LOWER(email) = ?", strings.ToLower(user.Username), user.Email).Count(&count)
+	}
+
+	if res.Error != nil {
+		return res.Error
 	}
 	if count > 0 {
 		return fmt.Errorf("El usuario ya existe")
