@@ -59,6 +59,10 @@ func TestDeleteUserUseCaseShouldValidateUser(t *testing.T) {
 	if err == nil {
 		t.Fatalf("Fallo Porque el Usuario no Existe")
 	}
+	err = DelteUserUseCase(deleteUser)
+	if err == nil {
+		t.Fatalf("Fallo Porque el Usuario Existe")
+	}
 }
 
 func TestDeleteUserUseCaseShouldValidateEmail(t *testing.T) {
@@ -84,5 +88,9 @@ func TestDeleteUserUseCaseShouldValidateEmail(t *testing.T) {
 	err = DelteUserUseCase(deleteUser)
 	if err != nil {
 		t.Fatalf("Fallo Porque el Usuario no Existe o Email mal formateado")
+	}
+	err = DelteUserUseCase(deleteUser)
+	if err == nil {
+		t.Fatalf("Fallo Porque el Usuario Existe")
 	}
 }
